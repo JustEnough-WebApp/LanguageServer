@@ -6,13 +6,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-	origin: ""                          // TODO: set url of language app client
+	origin: "https://just-enough.azurewebsites.net"
 }));
 
 
 app.get('/', (req, res) => {
 	res.type('text/html')
-	res.send('Language App Server')     // TODO: change to name of app
+	res.send('Just Enough - Web Server')    
 });
 
 app.get('/api/ping', bodyParser, (req, res) => {
