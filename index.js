@@ -22,6 +22,23 @@ app.get('/api/ping', bodyParser, (req, res) => {
   });
 
 
+app.post(/api/getQuestions, bodyParser, (req, res) => {
+	//let language = req.body.language;		// TODO: implement multiple languages
+	let language = "Spanish";		
+	var dictionaryEntries = {};
+	// TODO: import all entries of specified language
+
+	var quizEntries = {};
+	// TODO: randomly select 10 entries from dictionaryEntries to put into quizEntries
+
+	var quizQuestions = {};
+	// TODO: convert into json format of quiz entries including fake answers and the correct answer
+
+	res.type("application/json");
+	res.send(quizQuestions)
+})
+
+
 // Custom 404 page
 app.use((req, res) => {
 	res.type('text/plain')
