@@ -27,7 +27,7 @@ app.get('/api/ping', bodyParser, (req, res) => {
   });
 
 
-app.post(/api/getQuestions, bodyParser, (req, res) => {
+app.post('/api/getQuestions', bodyParser, (req, res) => {
 	//let language = req.body.language;		// TODO: implement multiple languages
 	let language = "Spanish";		
 	var dictionaryEntries = {};
