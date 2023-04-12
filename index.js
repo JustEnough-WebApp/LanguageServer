@@ -1,6 +1,11 @@
+import * as deepl from 'deepl-node';
+
 const express = require('express');
 const bodyParser = require('body-parser').json();
 const cors = require("cors");
+
+const deeplKey = "2b2f1cdb-c324-a0da-7107-dbecc04e19f1:fx";
+const deeplTranslator = new deepl.Translator(deeplKey);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -36,6 +41,17 @@ app.post(/api/getQuestions, bodyParser, (req, res) => {
 
 	res.type("application/json");
 	res.send(quizQuestions)
+})
+
+app.get('/api/getGerman', bodyParser, async (req, res) => {
+	//let original = req.word;
+	let original = "hello";
+	try {
+		var translationResult = await translator.translateText(original, 'en', 'de');
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.send(translationResult);
 })
 
 
