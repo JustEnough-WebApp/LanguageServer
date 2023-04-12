@@ -1,8 +1,7 @@
-import * as deepl from 'deepl-node';
-
 const express = require('express');
 const bodyParser = require('body-parser').json();
 const cors = require("cors");
+const deepl = require('deepl-node');
 
 const deeplKey = "2b2f1cdb-c324-a0da-7107-dbecc04e19f1:fx";
 const deeplTranslator = new deepl.Translator(deeplKey);
@@ -46,10 +45,14 @@ app.post('/api/getQuestions', bodyParser, (req, res) => {
 app.get('/api/getGerman', bodyParser, async (req, res) => {
 	//let original = req.word;
 	let original = "hello";
+	console.log(original);
 	try {
-		var translationResult = await translator.translateText(original, 'en', 'de');
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
+		translationResult = translationResult.text;
+		console.log("try " + translationResult);
 	} catch (e) {
 		var translationResult = "ERROR";
+		console.log("catch error");
 	}
 	res.send(translationResult);
 })
