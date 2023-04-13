@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-	origin: "https://just-enough.azurewebsites.net"
+	//origin: "https://just-enough.azurewebsites.net"
 }));
 
 
@@ -49,10 +49,10 @@ app.get('/api/getGerman', bodyParser, async (req, res) => {
 	try {
 		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
 		translationResult = translationResult.text;
-		console.log("try " + translationResult);
+		console.log(translationResult);
 	} catch (e) {
 		var translationResult = "ERROR";
-		console.log("catch error");
+		console.log("catch ERROR");
 	}
 	res.send(translationResult);
 })
