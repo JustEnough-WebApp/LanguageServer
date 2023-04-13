@@ -54,7 +54,7 @@ app.get('/api/getGerman', bodyParser, async (req, res) => {
 		var translationResult = "ERROR";
 		console.log("catch ERROR");
 	}
-	res.status('text/plain');
+	res.type('text/plain');
 	res.send(translationResult);
 })
 
