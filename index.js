@@ -42,7 +42,7 @@ app.post('/api/getQuestions', bodyParser, (req, res) => {
 	res.send(quizQuestions)
 })
 
-app.get('/api/getGerman', bodyParser, async (req, res) => {
+app.post('/api/getGerman', bodyParser, async (req, res) => {
 	let original = req.word;
 	//let original = "hello";
 	console.log(original);
@@ -52,7 +52,6 @@ app.get('/api/getGerman', bodyParser, async (req, res) => {
 		console.log(translationResult);
 	} catch (e) {
 		var translationResult = "ERROR";
-		console.log("catch ERROR");
 	}
 	res.type('application/json');
 	res.send(translationResult);
