@@ -43,8 +43,8 @@ app.post('/api/getQuestions', bodyParser, (req, res) => {
 })
 
 app.get('/api/getGerman', bodyParser, async (req, res) => {
-	//let original = req.word;
-	let original = "hello";
+	let original = req.word;
+	//let original = "hello";
 	console.log(original);
 	try {
 		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
@@ -54,7 +54,7 @@ app.get('/api/getGerman', bodyParser, async (req, res) => {
 		var translationResult = "ERROR";
 		console.log("catch ERROR");
 	}
-	res.type('text/plain');
+	res.type('application/json');
 	res.send(translationResult);
 })
 
