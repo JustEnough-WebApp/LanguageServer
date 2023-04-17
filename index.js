@@ -42,7 +42,7 @@ app.post('/api/getQuestions', bodyParser, (req, res) => {
 	res.send(quizQuestions)
 })
 
-app.post('/api/getGerman', bodyParser, async (req, res) => {
+app.get('/api/getGerman', bodyParser, async (req, res) => {
 	//let original = req.word;
 	let original = "hello";
 	console.log(original);
