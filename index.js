@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-	//origin: "https://just-enough.azurewebsites.net"
+	origin: "https://just-enough.azurewebsites.net"
 }));
 
 
@@ -25,7 +25,7 @@ app.get('/api/ping', bodyParser, (req, res) => {
 	res.send("Ping received!");
   });
 
-
+// TODO: remove, we probably won't use this as a server function
 app.post('/api/getQuestions', bodyParser, (req, res) => {
 	//let language = req.body.language;		// TODO: implement multiple languages
 	let language = "Spanish";		
@@ -44,7 +44,6 @@ app.post('/api/getQuestions', bodyParser, (req, res) => {
 
 app.post('/api/getGerman', bodyParser, async (req, res) => {
 	let original = req.body.word;
-	//let original = "hello";
 	console.log(original);
 	try {
 		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
