@@ -5,8 +5,9 @@ const deepl = require('deepl-node');	// for deepl API translator
 const mongoose = require("mongoose");	
 const MongoClient = require("mongodb").MongoClient;
 
-// URI for dictionary/vocab/flashcards here
+// TODO: URI for dictionary/vocab/flashcards here
 
+// URI for quiz
 const quizURI = "mongodb+srv://vykle:0yldDEoOzkWQpKo0@languagequizdb.joo5uwx.mongodb.net/test"
 mongoose.connect(quizURI, {useNewUrlParser: true}, {useUnifiedTopology: true})
 
@@ -17,7 +18,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-	origin: "https://just-enough.azurewebsites.net"
+	// origin: "https://just-enough.azurewebsites.net"   TODO: add back in after testing
 }));
 
 
@@ -49,14 +50,7 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 })
 
 
-
-///////
-const mongoose = require("mongoose");
-const MongoClient = require("mongodb").MongoClient;
-
-const mongooseUri = "mongodb+srv://vykle:0yldDEoOzkWQpKo0@languagequizdb.joo5uwx.mongodb.net/test"
-mongoose.connect(mongooseUri, {useNewUrlParser: true}, {useUnifiedTopology: true})
-
+// start quiz implementation
 const quizSchema = {
 	type: String, 
 	language: String,
@@ -69,19 +63,21 @@ const quizSchema = {
 }
 
 const Question = mongoose.model("question", quizSchema);
-const client = new MongoClient(mongooseUri).db("test");
-const collection = client.collection("questions");
+const quizClient = new MongoClient(quizURI).db("test");
+const quizColl = quizClient.collection("questions");
 
-
+// TODO: change to post - needed for getting language from client body
 app.get('/api/getQuestions', function(req, res) {
-	Question.find({}).then((questions) => {
-      res.type('application/json');
+	let language = "Spanish";
+	Question.aggregate([ 
+			{ $match: { language: language } },
+			{ $sample: { size: 10 } } 
+	]).then((questions) => {
+    	res.type('application/json');
 	    res.send(JSON.stringify(questions))
     })
   })
-
-
-
+// end quiz implementation
 
 
 // Custom 404 page
