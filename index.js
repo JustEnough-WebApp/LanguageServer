@@ -1,7 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser').json();
 const cors = require("cors");
-const deepl = require('deepl-node');
+const deepl = require('deepl-node');	// for deepl API translator
+const mongoose = require("mongoose");	
+const MongoClient = require("mongodb").MongoClient;
+
+// URI for dictionary/vocab/flashcards here
+
+const quizURI = "mongodb+srv://vykle:0yldDEoOzkWQpKo0@languagequizdb.joo5uwx.mongodb.net/test"
+mongoose.connect(quizURI, {useNewUrlParser: true}, {useUnifiedTopology: true})
 
 const deeplKey = "2b2f1cdb-c324-a0da-7107-dbecc04e19f1:fx";
 const deeplTranslator = new deepl.Translator(deeplKey);
@@ -25,23 +32,8 @@ app.get('/api/ping', bodyParser, (req, res) => {
 	res.send("Ping received!");
   });
 
-// TODO: remove, we probably won't use this as a server function
-app.post('/api/getQuestions', bodyParser, (req, res) => {
-	//let language = req.body.language;		// TODO: implement multiple languages
-	let language = "Spanish";		
-	var dictionaryEntries = {};
-	// TODO: import all entries of specified language
 
-	var quizEntries = {};
-	// TODO: randomly select 10 entries from dictionaryEntries to put into quizEntries
-
-	var quizQuestions = {};
-	// TODO: convert into json format of quiz entries including fake answers and the correct answer
-
-	res.type("application/json");
-	res.send(quizQuestions)
-})
-
+// gets German Translation for Dictionary Tab
 app.post('/api/getGerman', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	console.log(original);
@@ -57,6 +49,41 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 })
 
 
+
+///////
+const mongoose = require("mongoose");
+const MongoClient = require("mongodb").MongoClient;
+
+const mongooseUri = "mongodb+srv://vykle:0yldDEoOzkWQpKo0@languagequizdb.joo5uwx.mongodb.net/test"
+mongoose.connect(mongooseUri, {useNewUrlParser: true}, {useUnifiedTopology: true})
+
+const quizSchema = {
+	type: String, 
+	language: String,
+	question: String,
+	answer_a: String,
+	answer_b: String,
+	answer_c: String,
+	answer_d: String,
+	correct_answer: String
+}
+
+const Question = mongoose.model("question", quizSchema);
+const client = new MongoClient(mongooseUri).db("test");
+const collection = client.collection("questions");
+
+
+app.get('/api/getQuestions', function(req, res) {
+	Question.find({}).then((questions) => {
+      res.type('application/json');
+	    res.send(JSON.stringify(questions))
+    })
+  })
+
+
+
+
+
 // Custom 404 page
 app.use((req, res) => {
 	res.type('text/plain')
@@ -66,7 +93,7 @@ app.use((req, res) => {
 
 // Custom 500 page
 app.use(function (error, req, res, next) {
-	console.error(err.message)
+	console.error("Error")
 	res.type('text/plain')
 	res.status(500)
 	res.send('Server Error')
