@@ -67,9 +67,9 @@ const quizClient = new MongoClient(quizURI).db("test");
 const quizColl = quizClient.collection("questions");
 
 // TODO: change to post - needed for getting language from client body
-app.get('/api/getQuestions', bodyParser, function(req, res) {
-	let language = "Spanish";
-	let type = "color";
+app.post('/api/getQuestions', bodyParser, async (req, res) => {
+	let language = req.body.language;
+	let type = req.body.type;
 	Question.aggregate([ 
 			{ $match: {"$and": [{language: language }, {type: type}]}},
 			{ $sample: { size: 10 } } 
