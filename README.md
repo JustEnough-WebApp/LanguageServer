@@ -1,8 +1,9 @@
 # LanguageServer  
+Server for Just Enough project
 https://just-enough-server.azurewebsites.net  
   
     
-## Authors: Alex, Julie, Le, Soren, Vy  
+## Authors:  
 Alex, alexjhartlaub@lewisu.edu  
 Julie, juliegdosher@lewisu.edu  
 Le, vynle@lewisu.edu  
