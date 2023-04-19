@@ -66,7 +66,6 @@ const Question = mongoose.model("question", quizSchema);
 const quizClient = new MongoClient(quizURI).db("test");
 const quizColl = quizClient.collection("questions");
 
-// TODO: change to post - needed for getting language from client body
 app.post('/api/getQuestions', bodyParser, async (req, res) => {
 	let language = req.body.language;
 	let type = req.body.type;
