@@ -52,13 +52,6 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 })
 
 // start flashcard implementation
-
-// end flashcard implementation
-
-
-
-
-// stored in 'testA' database
 var ModelVocab = vocabConn.model('Vocab', new mongoose.Schema({
 	vocabSchema: { 
 		english: String,
@@ -68,7 +61,18 @@ var ModelVocab = vocabConn.model('Vocab', new mongoose.Schema({
 	}
 }));
 
-// stored in 'testB' database
+const Vocab = ModelVocab;
+const vocabClient = new MongoClient(vocabURI).db("_dictionary");
+const vocaColl = vocabClient.collection("entries");
+
+app.post('/api/getFlashcards', bodyParser, async (req, res) => {
+	// method to return vocab entries
+  })
+// end flashcard implementation
+
+
+
+// start quiz implementation
 var ModelQuestion = quizConn.model('Question', new mongoose.Schema({
 	quizSchema: {
 		type: String, 
@@ -81,10 +85,6 @@ var ModelQuestion = quizConn.model('Question', new mongoose.Schema({
 		correct_answer: String
 	}
 }));
-
-
-// start quiz implementation
-
 const Question = ModelQuestion;
 const quizClient = new MongoClient(quizURI).db("test");
 const quizColl = quizClient.collection("questions");
@@ -100,7 +100,6 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
 	    res.send(JSON.stringify(questions))
     })
   })
-mongoose.connection.close();
 // end quiz implementation
 
 

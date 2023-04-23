@@ -22,6 +22,11 @@ A link to our hosted web server is included [here](https://just-enough-server.az
 ### MongoDB and Mongoose Tutorials:    
 https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/read-operations/retrieve/  
 https://www.mongodb.com/docs/drivers/node/current/fundamentals/aggregation/  
+    
+     
+### Connecting Multiple MongoDB Databases:  
+https://stackoverflow.com/questions/19474712/mongoose-and-multiple-database-in-single-node-js-project  
+https://mongoosejs.com/docs/connections.html#multiple_connections  
    
     
 ### API's Used:  
