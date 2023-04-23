@@ -5,11 +5,13 @@ const deepl = require('deepl-node');	// for deepl API translator
 const mongoose = require("mongoose");	
 const MongoClient = require("mongodb").MongoClient;
 
-// TODO: URI for dictionary/vocab/flashcards here
+// URI for flashcards
+const vocabURI = "mongodb+srv://juliegdosher:ScrumTeamDPS@dictionary.s5gatyt.mongodb.net/_dictionary";
+var vocabConn = mongoose.createConnection(vocabURI);
 
 // URI for quiz
 const quizURI = "mongodb+srv://vykle:0yldDEoOzkWQpKo0@languagequizdb.joo5uwx.mongodb.net/test"
-mongoose.connect(quizURI, {useNewUrlParser: true}, {useUnifiedTopology: true})
+var quizConn = mongoose.createConnection(quizURI);
 
 const deeplKey = "2b2f1cdb-c324-a0da-7107-dbecc04e19f1:fx";
 const deeplTranslator = new deepl.Translator(deeplKey);
@@ -49,20 +51,41 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 	res.send(translationResult);
 })
 
+// start flashcard implementation
+
+// end flashcard implementation
+
+
+
+
+// stored in 'testA' database
+var ModelVocab = vocabConn.model('Vocab', new mongoose.Schema({
+	vocabSchema: { 
+		english: String,
+		language: String,
+		translation: String,
+		type: String, 
+	}
+}));
+
+// stored in 'testB' database
+var ModelQuestion = quizConn.model('Question', new mongoose.Schema({
+	quizSchema: {
+		type: String, 
+		language: String,
+		question: String,
+		answer_a: String,
+		answer_b: String,
+		answer_c: String,
+		answer_d: String,
+		correct_answer: String
+	}
+}));
+
 
 // start quiz implementation
-const quizSchema = {
-	type: String, 
-	language: String,
-	question: String,
-	answer_a: String,
-	answer_b: String,
-	answer_c: String,
-	answer_d: String,
-	correct_answer: String
-}
 
-const Question = mongoose.model("question", quizSchema);
+const Question = ModelQuestion;
 const quizClient = new MongoClient(quizURI).db("test");
 const quizColl = quizClient.collection("questions");
 
@@ -77,6 +100,7 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
 	    res.send(JSON.stringify(questions))
     })
   })
+mongoose.connection.close();
 // end quiz implementation
 
 
