@@ -4,11 +4,11 @@ https://just-enough-server.azurewebsites.net
   
     
 ## Authors:  
-Alex, alexjhartlaub@lewisu.edu  
-Julie, juliegdosher@lewisu.edu  
-Le, vynle@lewisu.edu  
-Soren, sorencthrawl@lewisu.edu  
+Le, vynle@lewisu.edu   
 Vy, vykle@lewisu.edu  
+Julie Dosher, juliegdosher@lewisu.edu  
+Alex Hartlaub, alexjhartlaub@lewisu.edu  
+Soren Thrawl, sorencthrawl@lewisu.edu  
      
 DeadPoetsScrumciety Scrum Team   
 CPSC 440, Spring 2023    
