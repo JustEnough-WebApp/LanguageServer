@@ -20,7 +20,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-	origin: "https://just-enough.azurewebsites.net"   //TODO: add back in after testing
+	//origin: "https://just-enough.azurewebsites.net"   //TODO: add back in after testing
 }));
 
 
@@ -70,8 +70,8 @@ app.get('/api/getFlashcards', bodyParser, async (req, res) => {
 	//let language = req.body.language;
 	//let type = req.body.type;
 
-	let language = Spanish;
-	let type = color;
+	let language = "Spanish";
+	let type = "color";
 
 	Vocab.aggregate([ 
 		{ $match: {"$and": [{language: language }, {type: type}]}},
