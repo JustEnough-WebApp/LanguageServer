@@ -66,19 +66,19 @@ const vocabColl = vocabClient.collection("entries");
 
 app.post('/api/getFlashcards', function (req, res) {
 	// method to return vocab entries
-	//let language = req.body.language;
-	//let type = req.body.type;
+	let language = req.body.language;
+	let type = req.body.type;
 
-	let language = "Spanish";
-	let type = "color";
+	//let language = "Spanish";
+	//let type = "color";
 
-	const cardsToReturn = vocabColl.find({
-		language: language,
-		type: type,
-	  });
-
-	  res.type('application/json');
-	  res.send(JSON.stringify(cardsToReturn));
+	Vocab.aggregate([ 
+		{ $match: {"$and": [{language: language }, {type: type}]}},
+		{ $sample: { size: 10 } } 
+	]).then((cards) => {
+		res.type('application/json');
+		res.send(JSON.stringify(cards))
+})
 })
 // end flashcard implementation
 
