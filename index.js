@@ -64,7 +64,7 @@ const Vocab = ModelVocab;
 const vocabClient = new MongoClient(vocabURI).db("_dictionary");
 const vocabColl = vocabClient.collection("entries");
 
-app.post('/api/getFlashcards', function (req, res) {
+app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	// method to return vocab entries
 	let language = req.body.language;
 	let type = req.body.type;
