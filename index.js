@@ -20,7 +20,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-	// origin: "https://just-enough.azurewebsites.net"   TODO: add back in after testing
+	origin: "https://just-enough.azurewebsites.net"   //TODO: add back in after testing
 }));
 
 
@@ -65,12 +65,17 @@ const Vocab = ModelVocab;
 const vocabClient = new MongoClient(vocabURI).db("_dictionary");
 const vocaColl = vocabClient.collection("entries");
 
-app.post('/api/getFlashcards', bodyParser, async (req, res) => {
+app.get('/api/getFlashcards', bodyParser, async (req, res) => {
 	// method to return vocab entries
-	let language = Spanish //req.body.English;
-	let type = color //req.body.definition;
+	//let language = req.body.language;
+	//let type = req.body.type;
+
+	let language = Spanish;
+	let type = color;
+
 	Vocab.aggregate([ 
 		{ $match: {"$and": [{language: language }, {type: type}]}},
+		//{ $match: {language: language }},
 		{ $sample: { size: 10 } }
 	]).then((cards) => {
     	res.type('application/json');
