@@ -67,6 +67,15 @@ const vocaColl = vocabClient.collection("entries");
 
 app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	// method to return vocab entries
+	let word = English //req.body.English;
+	let definition = language //req.body.definition;
+	Vocab.aggregate([ 
+			{ $match: {"$and": [{English: word }, {definition: definition}]}},
+			{ $sample: { size: 10 } } 
+	]).then((cards) => {
+    	res.type('application/json');
+	    res.send(JSON.stringify(cards))
+    })
   })
 // end flashcard implementation
 
