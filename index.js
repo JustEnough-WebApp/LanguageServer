@@ -60,10 +60,9 @@ var ModelVocab = vocabConn.model('Vocab', new mongoose.Schema({
 		type: String, 
 	}
 }));
-
 const Vocab = ModelVocab;
 const vocabClient = new MongoClient(vocabURI).db("_dictionary");
-const vocaColl = vocabClient.collection("entries");
+const vocabColl = vocabClient.collection("entries");
 
 app.get('/api/getFlashcards', function (req, res) {
 	// method to return vocab entries
@@ -73,17 +72,15 @@ app.get('/api/getFlashcards', function (req, res) {
 	let language = "Spanish";
 	let type = "color";
 
-	Vocab.aggregate([ 
-		{ $match: {"$and": [{language: language }, {type: type}]}},
-		//{ $match: {language: language }},
-		{ $sample: { size: 10 } }
-	]).then((cards) => {
-    	res.type('application/json');
-	    res.send(JSON.stringify(cards))
-    })
-  })
-// end flashcard implementation
+	const cardsToReturn = vocabColl.find({
+		language: language,
+		type: type,
+	  });
 
+	  res.type('application/json');
+	  res.send(JSON.stringify(cardsToReturn));
+})
+// end flashcard implementation
 
 
 // start quiz implementation
@@ -113,7 +110,7 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
     	res.type('application/json');
 	    res.send(JSON.stringify(questions))
     })
-  })
+})
 // end quiz implementation
 
 
