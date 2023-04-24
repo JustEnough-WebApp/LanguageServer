@@ -75,9 +75,9 @@ app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	Vocab.aggregate([ 
 		{ $match: {"$and": [{language: language }, {type: type}]}},
 		{ $sample: { size: 10 } } 
-	]).then((cards) => {
+	]).then((entries) => {
 		res.type('application/json');
-		res.send(JSON.stringify(cards))
+		res.send(JSON.stringify(entries))
 })
 })
 // end flashcard implementation
