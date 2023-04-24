@@ -79,7 +79,7 @@ app.get('/api/getFlashcards', function (req, res) {
 		{ $sample: { size: 10 } }
 	]).then((cards) => {
     	res.type('application/json');
-	    res.send(JSON.stringify(cards))
+	    res.send(JSON.stringify({"language": language, "type": type}))
     })
   })
 // end flashcard implementation
