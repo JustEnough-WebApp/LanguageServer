@@ -27,12 +27,15 @@ app.get('/', (req, res) => {
 	res.send('Just Enough - Web Server')    
 });
 
+// called by client to wake up server
 app.get('/api/ping', bodyParser, (req, res) => {
 	console.log("Ping recieved");
 	res.type("text/html");
 	res.send("Ping received!");
   });
 
+
+// TODO: app.post('/api/getFrench', ...), language code is 'fr'
 
 // gets German Translation for Dictionary Tab
 app.post('/api/getGerman', bodyParser, async (req, res) => {
@@ -48,6 +51,8 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 	res.type('application/json');
 	res.send(translationResult);
 })
+
+// TODO: app.post('/api/getNorwegian', ...), language code is 'nb'
 
 // start flashcard implementation
 let vocabConn = mongoose.createConnection(vocabURI);
@@ -71,8 +76,6 @@ app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	res.type('application.json');
 	res.send(JSON.stringify(entries));
 });
-
-
 // end flashcard implementation
 
 
