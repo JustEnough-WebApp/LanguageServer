@@ -66,10 +66,13 @@ let entryColl = entryClient.collection("entries");
 app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	let language = req.body.language;
 	let type = req.body.type;
+
 	let entries = await entryColl.find({ language: language, type: type }).toArray();
 	res.type('application.json');
 	res.send(JSON.stringify(entries));
 });
+
+
 // end flashcard implementation
 
 
