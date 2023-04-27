@@ -54,7 +54,8 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 
 // TODO: app.post('/api/getNorwegian', ...), language code is 'nb'
 
-// start flashcard implementation
+
+// for Learn and Flashcards tabs
 let vocabConn = mongoose.createConnection(vocabURI);
 let ModelEntry = vocabConn.model('Entry', new mongoose.Schema({
 	entrySchema: {
@@ -67,6 +68,24 @@ let ModelEntry = vocabConn.model('Entry', new mongoose.Schema({
 let Entry = ModelEntry;
 let entryClient = new MongoClient(vocabURI).db("_dictionary");
 let entryColl = entryClient.collection("entries");
+// end mongoose for Learn and Flashcards tabs
+
+
+app.post('/api/getLearn', bodyParser, async (req, res) => {
+	let languages = req.body.languages;
+	let types = req.body.types;
+
+	var entries = [];
+	for (i = 0; i < languages.length; i++) {
+		for (j = 0; j < types.length; j++) {
+			entries.push(entryColl.find({ language: language, type: type }).toArray());
+			// entries array will contain arrays of each type within each language
+		}
+	}
+
+	res.type('application.json');
+	res.send(JSON.stringify(entries));
+});
 
 app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	let language = req.body.language;
@@ -76,7 +95,6 @@ app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	res.type('application.json');
 	res.send(JSON.stringify(entries));
 });
-// end flashcard implementation
 
 
 // start quiz implementation
