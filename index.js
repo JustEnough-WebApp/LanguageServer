@@ -38,6 +38,7 @@ app.get('/api/ping', bodyParser, (req, res) => {
 // TODO: app.post('/api/getFrench', ...), language code is 'fr'
 
 // gets German Translation for Dictionary Tab
+// de - German language code
 app.post('/api/getGerman', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
