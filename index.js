@@ -40,11 +40,9 @@ app.get('/api/ping', bodyParser, (req, res) => {
 // gets German Translation for Dictionary Tab
 app.post('/api/getGerman', bodyParser, async (req, res) => {
 	let original = req.body.word;
-	console.log(original);
 	try {
 		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
 		translationResult = translationResult.text;
-		console.log(translationResult);
 	} catch (e) {
 		var translationResult = "ERROR";
 	}
