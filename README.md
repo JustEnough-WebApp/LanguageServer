@@ -22,6 +22,7 @@ A link to our hosted web server is included [here](https://just-enough-server.az
 ### MongoDB and Mongoose Tutorials:    
 https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/read-operations/retrieve/  
 https://www.mongodb.com/docs/drivers/node/current/fundamentals/aggregation/  
+https://stackoverflow.com/questions/64481616/mongodb-mongoose-iterate-over-find-results   
     
      
 ### Connecting Multiple MongoDB Databases:  

@@ -54,7 +54,7 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 // TODO: app.post('/api/getNorwegian', ...), language code is 'nb'
 
 
-// for Learn and Flashcards tabs
+// mongoose for Learn and Flashcards tabs
 let vocabConn = mongoose.createConnection(vocabURI);
 let ModelEntry = vocabConn.model('Entry', new mongoose.Schema({
 	entrySchema: {
@@ -77,14 +77,17 @@ app.post('/api/getLearn', bodyParser, async (req, res) => {
 	var entries = [];
 	for (i = 0; i < languages.length; i++) {
 		for (j = 0; j < types.length; j++) {
-			entries.push(entryColl.find({ language: language, type: type }).toArray());
-			// entries array will contain arrays of each type within each language
+			var cursor = Entry.find({ language: languages[i], type: types[j] }).cursor()
+			for (let doc = await cursor.next(); doc != null; doc = await cursor.next()) {
+				entries.push(doc);
+			}
 		}
 	}
-
+	
 	res.type('application.json');
 	res.send(JSON.stringify(entries));
 });
+
 
 app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	let language = req.body.language;
