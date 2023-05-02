@@ -36,6 +36,17 @@ app.get('/api/ping', bodyParser, (req, res) => {
 
 
 // TODO: app.post('/api/getFrench', ...), language code is 'fr'
+app.post('/api/getFrench', bodyParser, async (req, res) => {
+	let original = req.body.word;
+	try {
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'fr');
+		translationResult = translationResult.text;
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.type('application/json');
+	res.send(translationResult);
+})
 
 // gets German Translation for Dictionary Tab
 // de - German language code
@@ -52,7 +63,17 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 })
 
 // TODO: app.post('/api/getNorwegian', ...), language code is 'nb'
-
+app.post('/api/getNorwegian', bodyParser, async (req, res) => {
+	let original = req.body.word;
+	try {
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'nb');
+		translationResult = translationResult.text;
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.type('application/json');
+	res.send(translationResult);
+})
 
 // mongoose for Learn and Flashcards tabs
 let vocabConn = mongoose.createConnection(vocabURI);
