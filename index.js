@@ -5,12 +5,6 @@ const deepl = require('deepl-node');	// for deepl API translator
 const mongoose = require("mongoose");	
 const MongoClient = require("mongodb").MongoClient;
 
-// URI for flashcards
-const vocabURI = "mongodb+srv://juliegdosher:ScrumTeamDPS@dictionary.s5gatyt.mongodb.net/_dictionary";
-
-// URI for quiz
-const quizURI = "mongodb+srv://vykle:0yldDEoOzkWQpKo0@languagequizdb.joo5uwx.mongodb.net/test"
-
 const deeplKey = "2b2f1cdb-c324-a0da-7107-dbecc04e19f1:fx";
 const deeplTranslator = new deepl.Translator(deeplKey);
 
@@ -22,6 +16,50 @@ app.use(cors({
 }));
 
 
+// URI for MongoDB Database
+const uri = "mongodb+srv://juliegdosher:ScrumTeamDPS@dictionary.s5gatyt.mongodb.net/_dictionary";
+
+// Connect to MongoDB
+const client = new MongoClient(uri).db("_dictionary");
+async function connectDB() {
+	try {
+		await mongoose.connect(uri)
+	}
+	catch(err) {
+		console.log(err)
+	}
+}
+connectDB()
+
+// MongoDB Collections
+const entryColl = client.collection("entries");
+const questionColl = client.collection("questions");
+
+// Define schemas
+const Schema = mongoose.Schema;
+const vocabSchema = new Schema({
+    english: String, 
+    language: String,
+    translation: String,
+    type: String
+});
+const questionSchema = new Schema({
+    type: String, 
+	language: String,
+	question: String,
+	answer_a: String,
+	answer_b: String,
+	answer_c: String,
+	answer_d: String,
+	correct_answer: String
+});
+
+// Define models
+const Entry = mongoose.model('Entry', vocabSchema) 
+const Question = mongoose.model('Question', questionSchema)
+
+
+// base of server
 app.get('/', (req, res) => {
 	res.type('text/html')
 	res.send('Just Enough - Web Server')    
@@ -35,62 +73,9 @@ app.get('/api/ping', bodyParser, (req, res) => {
   });
 
 
-// TODO: app.post('/api/getFrench', ...), language code is 'fr'
-app.post('/api/getFrench', bodyParser, async (req, res) => {
-	let original = req.body.word;
-	try {
-		var translationResult = await deeplTranslator.translateText(original, 'en', 'fr');
-		translationResult = translationResult.text;
-	} catch (e) {
-		var translationResult = "ERROR";
-	}
-	res.type('application/json');
-	res.send(translationResult);
-})
+//// MongoDB APIs ////
 
-// gets German Translation for Dictionary Tab
-// de - German language code
-app.post('/api/getGerman', bodyParser, async (req, res) => {
-	let original = req.body.word;
-	try {
-		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
-		translationResult = translationResult.text;
-	} catch (e) {
-		var translationResult = "ERROR";
-	}
-	res.type('application/json');
-	res.send(translationResult);
-})
-
-// TODO: app.post('/api/getNorwegian', ...), language code is 'nb'
-app.post('/api/getNorwegian', bodyParser, async (req, res) => {
-	let original = req.body.word;
-	try {
-		var translationResult = await deeplTranslator.translateText(original, 'en', 'nb');
-		translationResult = translationResult.text;
-	} catch (e) {
-		var translationResult = "ERROR";
-	}
-	res.type('application/json');
-	res.send(translationResult);
-})
-
-// mongoose for Learn and Flashcards tabs
-let vocabConn = mongoose.createConnection(vocabURI);
-let ModelEntry = vocabConn.model('Entry', new mongoose.Schema({
-	entrySchema: {
-		english: String, 
-		language: String,
-		translation: String,
-		type: String
-	}
-}));
-let Entry = ModelEntry;
-let entryClient = new MongoClient(vocabURI).db("_dictionary");
-let entryColl = entryClient.collection("entries");
-// end mongoose for Learn and Flashcards tabs
-
-
+// gets (vocab) Entries for Learn tab
 app.post('/api/getLearn', bodyParser, async (req, res) => {
 	let languages = req.body.languages;
 	let types = req.body.types;
@@ -109,7 +94,7 @@ app.post('/api/getLearn', bodyParser, async (req, res) => {
 	res.send(JSON.stringify(entries));
 });
 
-
+// gets (vocab) Entries for Flashcards tab
 app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	let language = req.body.language;
 	let type = req.body.type;
@@ -119,25 +104,7 @@ app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	res.send(JSON.stringify(entries));
 });
 
-
-// start quiz implementation
-var quizConn = mongoose.createConnection(quizURI);
-var ModelQuestion = quizConn.model('Question', new mongoose.Schema({
-	quizSchema: {
-		type: String, 
-		language: String,
-		question: String,
-		answer_a: String,
-		answer_b: String,
-		answer_c: String,
-		answer_d: String,
-		correct_answer: String
-	}
-}));
-const Question = ModelQuestion;
-const quizClient = new MongoClient(quizURI).db("test");
-const quizColl = quizClient.collection("questions");
-
+// gets Questions for Quiz tab 
 app.post('/api/getQuestions', bodyParser, async (req, res) => {
 	let language = req.body.language;
 	let type = req.body.type;
@@ -149,7 +116,49 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
 	    res.send(JSON.stringify(questions))
     })
 })
-// end quiz implementation
+
+
+//// Language Translation APIs ////
+
+// gets French translation for Dictionary Tab
+app.post('/api/getFrench', bodyParser, async (req, res) => {
+	let original = req.body.word;
+	try {
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'fr');
+		translationResult = translationResult.text;
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.type('application/json');
+	res.send(translationResult);
+})
+
+
+// gets German translation for Dictionary Tab
+app.post('/api/getGerman', bodyParser, async (req, res) => {
+	let original = req.body.word;
+	try {
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
+		translationResult = translationResult.text;
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.type('application/json');
+	res.send(translationResult);
+})
+
+// gets Norwegian translation for Dictionary Tab
+app.post('/api/getNorwegian', bodyParser, async (req, res) => {
+	let original = req.body.word;
+	try {
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'nb');
+		translationResult = translationResult.text;
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.type('application/json');
+	res.send(translationResult);
+})
 
 
 // Custom 404 page
@@ -168,7 +177,7 @@ app.use(function (error, req, res, next) {
 });
 
 
-//Start your server on a specified port
+//Start server on a specified port
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 });
