@@ -120,6 +120,19 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
 
 //// Language Translation APIs ////
 
+// gets Spanish translation for Dictionary Tab
+app.post('/api/getSpanish', bodyParser, async (req, res) => {
+	let original = req.body.word;
+	try {
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'sp');
+		translationResult = translationResult.text;
+	} catch (e) {
+		var translationResult = "ERROR";
+	}
+	res.type('application/json');
+	res.send(translationResult);
+})
+
 // gets French translation for Dictionary Tab
 app.post('/api/getFrench', bodyParser, async (req, res) => {
 	let original = req.body.word;
