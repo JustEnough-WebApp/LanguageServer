@@ -1,3 +1,5 @@
+const {config} = require('./config.js');
+
 const express = require('express');
 const bodyParser = require('body-parser').json();
 const cors = require("cors");
@@ -5,7 +7,7 @@ const deepl = require('deepl-node');	// for deepl API translator
 const mongoose = require("mongoose");	
 const MongoClient = require("mongodb").MongoClient;
 
-const deeplKey = "2b2f1cdb-c324-a0da-7107-dbecc04e19f1:fx";
+const deeplKey = config.DEEPL_KEY;
 const deeplTranslator = new deepl.Translator(deeplKey);
 
 const app = express();
@@ -15,15 +17,17 @@ app.use(cors({
 	//origin: "https://just-enough.azurewebsites.net"   //TODO: add back in after testing
 }));
 
-
+config.DB_USER
 // URI for MongoDB Database
-const uri = "mongodb+srv://juliegdosher:ScrumTeamDPS@dictionary.s5gatyt.mongodb.net/_dictionary";
+const uri = 'mongodb+srv://' + config.DB_USER + ':' + config.DB_PASS + '@' + config.DB_CLUSTER 
+	+ '.s5gatyt.mongodb.net/_dictionary';
 
 // Connect to MongoDB
 const client = new MongoClient(uri).db("_dictionary");
 async function connectDB() {
 	try {
 		await mongoose.connect(uri)
+		console.log("reached")
 	}
 	catch(err) {
 		console.log(err)
