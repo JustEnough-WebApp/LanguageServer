@@ -7,8 +7,13 @@ const deepl = require('deepl-node');	// for deepl API translator
 const mongoose = require("mongoose");	
 const MongoClient = require("mongodb").MongoClient;
 
-const deeplKey = config.DEEPL_KEY;
-const deeplTranslator = new deepl.Translator(deeplKey);
+const DEEPL_KEY = require('./config.js');
+const deeplTranslator = new deepl.Translator(DEEPL_KEY);
+
+const DB_USER = require('./config.js');
+const DB_PASS = require('./config.js');
+const DB_CLUSTER = require('./config.js');
+
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,7 +24,7 @@ app.use(cors({
 
 config.DB_USER
 // URI for MongoDB Database
-const uri = 'mongodb+srv://' + config.DB_USER + ':' + config.DB_PASS + '@' + config.DB_CLUSTER 
+const uri = 'mongodb+srv://' + DB_USER + ':' + DB_PASS + '@' + DB_CLUSTER 
 	+ '.s5gatyt.mongodb.net/_dictionary';
 
 // Connect to MongoDB
