@@ -124,7 +124,7 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
 app.post('/api/getSpanish', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
-		var translationResult = await deeplTranslator.translateText(original, 'en', 'sp');
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'es');
 		translationResult = translationResult.text;
 	} catch (e) {
 		var translationResult = "ERROR";
