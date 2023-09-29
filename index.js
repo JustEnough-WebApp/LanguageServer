@@ -124,7 +124,7 @@ app.post('/api/getQuestions', bodyParser, async (req, res) => {
 app.post('/api/getEnglish', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
-		var translationResult = await deeplTranslator.translateText(original, 'en-us');
+		var translationResult = await deeplTranslator.translateText(original, null, 'en-US')
 		translationResult = translationResult.text;
 	} catch (e) {
 		var translationResult = "ERROR";
@@ -137,7 +137,7 @@ app.post('/api/getEnglish', bodyParser, async (req, res) => {
 app.post('/api/getSpanish', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
-		var translationResult = await deeplTranslator.translateText(original, 'sp');
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'sp');
 		translationResult = translationResult.text;
 	} catch (e) {
 		var translationResult = "ERROR";
@@ -150,7 +150,7 @@ app.post('/api/getSpanish', bodyParser, async (req, res) => {
 app.post('/api/getFrench', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
-		var translationResult = await deeplTranslator.translateText(original, 'fr');
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'fr');
 		translationResult = translationResult.text;
 	} catch (e) {
 		var translationResult = "ERROR";
@@ -164,7 +164,7 @@ app.post('/api/getFrench', bodyParser, async (req, res) => {
 app.post('/api/getGerman', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
-		var translationResult = await deeplTranslator.translateText(original, 'de');
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'de');
 		translationResult = translationResult.text;
 	} catch (e) {
 		var translationResult = "ERROR";
@@ -177,7 +177,7 @@ app.post('/api/getGerman', bodyParser, async (req, res) => {
 app.post('/api/getNorwegian', bodyParser, async (req, res) => {
 	let original = req.body.word;
 	try {
-		var translationResult = await deeplTranslator.translateText(original, 'nb');
+		var translationResult = await deeplTranslator.translateText(original, 'en', 'nb');
 		translationResult = translationResult.text;
 	} catch (e) {
 		var translationResult = "ERROR";
