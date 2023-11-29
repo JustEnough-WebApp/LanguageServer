@@ -104,6 +104,21 @@ app.post('/api/getFlashcards', bodyParser, async (req, res) => {
 	res.send(JSON.stringify(entries));
 });
 
+// gets terms for Matching tab
+app.post('/api/getMatching', bodyParser, async (req, res) => {
+	let language = req.body.language;
+	let type = req.body.type;
+	Entry.aggregate([ 
+			{ $match: {"$and": [{language: language }, {type: type}]}},
+			{ $sample: { size: 10 } } 
+	]).then((entires) => {
+    	res.type('application/json');
+	    res.send(JSON.stringify(entries))
+    })
+})
+
+
+
 // gets Questions for Quiz tab 
 app.post('/api/getQuestions', bodyParser, async (req, res) => {
 	let language = req.body.language;
