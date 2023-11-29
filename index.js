@@ -111,7 +111,7 @@ app.post('/api/getMatching', bodyParser, async (req, res) => {
 	Entry.aggregate([ 
 			{ $match: {"$and": [{language: language }, {type: type}]}},
 			{ $sample: { size: 10 } } 
-	]).then((entires) => {
+	]).then((entries) => {
     	res.type('application/json');
 	    res.send(JSON.stringify(entries))
     })
